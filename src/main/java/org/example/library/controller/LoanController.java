@@ -1,0 +1,29 @@
+package org.example.library.controller;
+
+
+import lombok.RequiredArgsConstructor;
+import org.example.library.service.LoanService;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/user")
+@RequiredArgsConstructor
+public class LoanController {
+
+    private final LoanService loanService;
+
+    @PostMapping("/borrow/{memberId}/{bookId}")
+    public String borrowBook(@PathVariable Long memberId, @PathVariable Long bookId) {
+        loanService.borrowBook(memberId, bookId);
+        return "대출 완료";
+    }
+
+    @PostMapping("/return/{bookId}")
+    public String returnBook(@PathVariable Long bookId) {
+        loanService.returnBook(bookId);
+        return "반납 완료";
+    }
+}
