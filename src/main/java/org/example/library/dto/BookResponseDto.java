@@ -9,7 +9,7 @@ import org.example.library.entity.Book;
 @AllArgsConstructor
 public class BookResponseDto {
 
-    private Long id;  // ✅ 응답에서만 필요한 값
+    private Long id;  // 응답에서만 필요한 값
     private String title;
     private String author;
 

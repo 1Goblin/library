@@ -3,6 +3,7 @@ package org.example.library.service;
 
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.example.library.dto.LoanResponseDto;
 import org.example.library.entity.Book;
 import org.example.library.entity.Loan;
 import org.example.library.entity.Member;
@@ -23,10 +24,10 @@ public class LoanService {
     private final BookRepository bookRepository;
     private final MemberRepository memberRepository;
 
-    public Loan borrowBook(Long memberId, Long bookId) {
+    public LoanResponseDto borrowBook(Long memberId, Long bookId) {
         Book book = bookRepository.findById(bookId)
             .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
-        if (!book.isAvailable()) {
+        if (!book.isAvailable()) {      //@Getter는 boolean타입이면 isAvailable로 가져올 수 있음
             throw new CustomException(ErrorCode.BOOK_ALREADY_BORROWED);
         }
 
@@ -40,7 +41,8 @@ public class LoanService {
             .build();
 
         book.setAvailable(false);
-        return loanRepository.save(loan);
+        Loan loanSave = loanRepository.save(loan);
+        return LoanResponseDto.from(loanSave);
     }
 
     public void returnBook(Long bookId) {
