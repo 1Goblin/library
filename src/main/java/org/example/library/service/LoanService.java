@@ -57,6 +57,7 @@ public class LoanService {
     }
 
     //책 반납하기
+    @Transactional
     public LoanResponseDto returnBook(Long memberId, Long bookId) {
 
         Loan loan = loanRepository.findByMemberIdAndBookIdAndReturnDateIsNull(memberId, bookId)
@@ -70,9 +71,19 @@ public class LoanService {
         return LoanResponseDto.from(saveLoan);
     }
 
-    //사용자가 빌민 책 조회
+    //사용자가 빌린 책 조회
+    @Transactional
     public List<LoanResponseDto> getLoans(Long memberId) {
         List<Loan> loans = loanRepository.findByMemberIdAndReturnDateIsNull(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+
+        return loans.stream().map(LoanResponseDto::from).toList();
+    }
+
+    //사용자가 빌렸던 모든 기록 조회
+    @Transactional
+    public List<LoanResponseDto> getAllLoans(Long memberId) {
+        List<Loan> loans = loanRepository.findByMemberId(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
         return loans.stream().map(LoanResponseDto::from).toList();

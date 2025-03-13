@@ -46,4 +46,12 @@ public class LoanController {
     }
 
 
+    //사용자가 빌렸던 기록 모두 조회
+    @GetMapping("/member/{memberId}")
+    public ResponseEntity<List<LoanResponseDto>> getMemberLoans(@PathVariable Long memberId) {
+        List<LoanResponseDto> loanResponseDtos = loanService.getAllLoans(memberId);
+        return ResponseEntity.ok(loanResponseDtos);
+    }
+
+
 }

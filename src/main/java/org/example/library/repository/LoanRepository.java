@@ -12,5 +12,8 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
 
     Optional<List<Loan>> findByMemberIdAndReturnDateIsNull(Long memberId);
 
+    Optional<List<Loan>> findByMemberId(Long memberId);
+
     Optional<Loan> findByMemberIdAndBookIdAndReturnDateIsNull(Long memberId, Long bookId);
+
 }
