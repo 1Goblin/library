@@ -2,6 +2,7 @@ package org.example.library.service;
 
 
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.library.dto.LoanResponseDto;
 import org.example.library.entity.Book;
@@ -24,16 +25,21 @@ public class LoanService {
     private final BookRepository bookRepository;
     private final MemberRepository memberRepository;
 
+    //책 빌리기
     public LoanResponseDto borrowBook(Long memberId, Long bookId) {
+
+        //책 존재 확인
         Book book = bookRepository.findById(bookId)
             .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
         if (!book.isAvailable()) {      //@Getter는 boolean타입이면 isAvailable로 가져올 수 있음
             throw new CustomException(ErrorCode.BOOK_ALREADY_BORROWED);
         }
 
+        //회원 존재 확인
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
+        //대출 객체 생성
         Loan loan = Loan.builder()
             .member(member)
             .book(book)
@@ -41,11 +47,15 @@ public class LoanService {
             .returnDate(null)
             .build();
 
+        //책 대출 불가능 설정
         book.setAvailable(false);
+
+        //대출 객체 생성
         Loan saveLoan = loanRepository.save(loan);
         return LoanResponseDto.from(saveLoan);
     }
 
+    //책 반납하기
     public LoanResponseDto returnBook(Long memberId, Long bookId) {
         Loan loan = loanRepository.findByMemberIdAndBookIdAndReturnDateIsNull(memberId, bookId)
             .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
@@ -56,5 +66,13 @@ public class LoanService {
         Loan saveLoan = loanRepository.save(loan);
 
         return LoanResponseDto.from(saveLoan);
+    }
+
+    //사용자가 빌민 책 조회
+    public List<LoanResponseDto> getLoans(Long memberId) {
+        List<Loan> loans = loanRepository.findByMemberIdAndReturnDateIsNull(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+
+        return loans.stream().map(LoanResponseDto::from).toList();
     }
 }
