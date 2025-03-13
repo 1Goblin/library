@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
 
     Optional<Loan> findByBookIdAndReturnDateIsNull(Long bookId);
+
+    Optional<Loan> findByMemberIdAndBookIdAndReturnDateIsNull(Long memberId, Long bookId);
 }

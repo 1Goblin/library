@@ -38,18 +38,23 @@ public class LoanService {
             .member(member)
             .book(book)
             .loanDate(LocalDate.now())
+            .returnDate(null)
             .build();
 
         book.setAvailable(false);
-        Loan loanSave = loanRepository.save(loan);
-        return LoanResponseDto.from(loanSave);
+        Loan saveLoan = loanRepository.save(loan);
+        return LoanResponseDto.from(saveLoan);
     }
 
-    public void returnBook(Long bookId) {
-        Loan loan = loanRepository.findByBookIdAndReturnDateIsNull(bookId)
-            .orElseThrow(() -> new IllegalArgumentException("대출 정보를 찾을 수 없습니다."));
+    public LoanResponseDto returnBook(Long memberId, Long bookId) {
+        Loan loan = loanRepository.findByMemberIdAndBookIdAndReturnDateIsNull(memberId, bookId)
+            .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
         loan.setReturnDate(LocalDate.now());
         loan.getBook().setAvailable(true);
+
+        Loan saveLoan = loanRepository.save(loan);
+
+        return LoanResponseDto.from(saveLoan);
     }
 }

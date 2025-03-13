@@ -25,8 +25,9 @@ public class LoanController {
     }
 
     @PostMapping("/return/{bookId}")
-    public String returnBook(@PathVariable Long bookId) {
-        loanService.returnBook(bookId);
-        return "반납 완료";
+    public ResponseEntity<LoanResponseDto> returnBook(@PathVariable Long memberId,
+        @PathVariable Long bookId) {
+        LoanResponseDto loanResponseDto = loanService.returnBook(memberId, bookId);
+        return ResponseEntity.ok(loanResponseDto);
     }
 }

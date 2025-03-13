@@ -21,6 +21,6 @@ public class LoanResponseDto {
 
     public static LoanResponseDto from(Loan loan) {
         return new LoanResponseDto(loan.getBook().getId(), loan.getBook().getTitle(),
-            LocalDate.now(), null);
+            LocalDate.now(), loan.getReturnDate());
     }
 }
