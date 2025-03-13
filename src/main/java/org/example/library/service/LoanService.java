@@ -58,8 +58,9 @@ public class LoanService {
 
     //책 반납하기
     public LoanResponseDto returnBook(Long memberId, Long bookId) {
+
         Loan loan = loanRepository.findByMemberIdAndBookIdAndReturnDateIsNull(memberId, bookId)
-            .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_BORROWED));
 
         loan.setReturnDate(LocalDateTime.now());
         loan.getBook().setAvailable(true);

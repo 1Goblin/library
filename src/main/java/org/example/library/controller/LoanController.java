@@ -36,6 +36,7 @@ public class LoanController {
     }
 
 
+    //빌린책 조회하기
     @GetMapping("/member/{memberId}/active")
     public ResponseEntity<List<LoanResponseDto>> getActiveLoans(@PathVariable Long memberId) {
 

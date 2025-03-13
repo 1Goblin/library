@@ -15,6 +15,7 @@ public enum ErrorCode {
     //도서 관련 예외
     BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 도서를 찾을 수 없습니다."),
     BOOK_ALREADY_BORROWED(HttpStatus.BAD_REQUEST, "이미 대출된 도서입니다."),
+    BOOK_NOT_BORROWED(HttpStatus.BAD_REQUEST, "대출되지 않은 도서입니다."),
 
     //인증 관련 예외
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다."),
