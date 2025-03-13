@@ -29,5 +29,6 @@ public class Book {
     @Column(nullable = false)
     private String author;
 
-    private boolean available = true; // 대출 가능 여부
+    @Column(nullable = false)
+    private boolean available; // 대출 가능 여부
 }

@@ -1,7 +1,7 @@
 package org.example.library.service;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.library.dto.LoanResponseDto;
@@ -26,6 +26,7 @@ public class LoanService {
     private final MemberRepository memberRepository;
 
     //책 빌리기
+    @Transactional
     public LoanResponseDto borrowBook(Long memberId, Long bookId) {
 
         //책 존재 확인
@@ -43,7 +44,7 @@ public class LoanService {
         Loan loan = Loan.builder()
             .member(member)
             .book(book)
-            .loanDate(LocalDate.now())
+            .loanDate(LocalDateTime.now())
             .returnDate(null)
             .build();
 
@@ -60,7 +61,7 @@ public class LoanService {
         Loan loan = loanRepository.findByMemberIdAndBookIdAndReturnDateIsNull(memberId, bookId)
             .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
-        loan.setReturnDate(LocalDate.now());
+        loan.setReturnDate(LocalDateTime.now());
         loan.getBook().setAvailable(true);
 
         Loan saveLoan = loanRepository.save(loan);

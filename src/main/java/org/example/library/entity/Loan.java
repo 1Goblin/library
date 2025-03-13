@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +33,6 @@ public class Loan {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    private LocalDate loanDate;
-    private LocalDate returnDate;
+    private LocalDateTime loanDate;
+    private LocalDateTime returnDate;
 }

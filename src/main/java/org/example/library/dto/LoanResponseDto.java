@@ -1,7 +1,7 @@
 package org.example.library.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.example.library.entity.Loan;
@@ -14,13 +14,13 @@ public class LoanResponseDto {
     private String bookTitle;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate loanDate;
+    private LocalDateTime loanDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate returnDate;
+    private LocalDateTime returnDate;
 
     public static LoanResponseDto from(Loan loan) {
         return new LoanResponseDto(loan.getBook().getId(), loan.getBook().getTitle(),
-            LocalDate.now(), loan.getReturnDate());
+            LocalDateTime.now(), loan.getReturnDate());
     }
 }
